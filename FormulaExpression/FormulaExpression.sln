@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaExpression.Infrastructure", "FormulaExpression.Infrastructure\FormulaExpression.Infrastructure.csproj", "{C7CEB893-C459-40A8-BBF5-400EC85E77FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaExpression.Service", "FormulaExpression.Service\FormulaExpression.Service.csproj", "{711C34C7-7ED5-4D15-9BCA-74C26CAAE304}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaExpression.Web", "FormulaExpression.Web\FormulaExpression.Web.csproj", "{879BDA84-33AA-4100-94B5-C741F9C23BE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7CEB893-C459-40A8-BBF5-400EC85E77FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CEB893-C459-40A8-BBF5-400EC85E77FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CEB893-C459-40A8-BBF5-400EC85E77FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CEB893-C459-40A8-BBF5-400EC85E77FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711C34C7-7ED5-4D15-9BCA-74C26CAAE304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711C34C7-7ED5-4D15-9BCA-74C26CAAE304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711C34C7-7ED5-4D15-9BCA-74C26CAAE304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711C34C7-7ED5-4D15-9BCA-74C26CAAE304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879BDA84-33AA-4100-94B5-C741F9C23BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879BDA84-33AA-4100-94B5-C741F9C23BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879BDA84-33AA-4100-94B5-C741F9C23BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879BDA84-33AA-4100-94B5-C741F9C23BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
