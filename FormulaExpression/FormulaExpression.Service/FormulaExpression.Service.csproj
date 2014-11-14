@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExpressionHelper">
+      <HintPath>..\..\Lib\ExpressionHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="SqlServerDataAdapter">
+      <HintPath>..\..\Lib\SqlServerDataAdapter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,7 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmmeterService.cs" />
+    <Compile Include="ExpressionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FormulaExpression.Infrastructure\FormulaExpression.Infrastructure.csproj">
+      <Project>{c7ceb893-c459-40a8-bbf5-400ec85e77fe}</Project>
+      <Name>FormulaExpression.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
