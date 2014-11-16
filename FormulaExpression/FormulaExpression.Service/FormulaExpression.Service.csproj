@@ -33,7 +33,8 @@
     <Reference Include="ExpressionHelper">
       <HintPath>..\..\Lib\ExpressionHelper.dll</HintPath>
     </Reference>
-    <Reference Include="SqlServerDataAdapter">
+    <Reference Include="SqlServerDataAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\SqlServerDataAdapter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -47,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AmmeterService.cs" />
     <Compile Include="ExpressionService.cs" />
+    <Compile Include="OrganizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

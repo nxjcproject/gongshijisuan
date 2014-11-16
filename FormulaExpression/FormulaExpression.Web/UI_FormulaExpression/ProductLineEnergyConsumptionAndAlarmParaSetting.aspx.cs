@@ -15,7 +15,10 @@ namespace FormulaExpression.Web.UI_FormulaExpression
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
 
+            }
         }
 
         [WebMethod]
@@ -41,6 +44,19 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         }
 
         [WebMethod]
+        public static void UpdateFormulaGroupName(string keyId, string name)
+        {
+            Guid id = new Guid(keyId);
+
+            ExpressionService.SaveFormulaGroupName(id, name);
+        }
+
+        /// <summary>
+        /// 获取所有公式
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        [WebMethod]
         public static string GetFormulasWithTreeGridFormat(string keyId)
         {
             Guid id = new Guid(keyId);
@@ -56,6 +72,21 @@ namespace FormulaExpression.Web.UI_FormulaExpression
             }
 
             return TreeGridJsonParser.DataTableToJson(formulas, "LevelCode", "ParentID", "Name", "Formula", "Denominator", "Required", "AlarmType", "EnergyAlarmValue", "PowerAlarmValue", "RelativeParameters", "Remarks");
+        }
+
+        /// <summary>
+        /// 保存所有公式
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="json"></param>
+        [WebMethod]
+        public static void SaveFormulasWithTreeGridFormat(string keyId, string json)
+        {
+            Guid id = new Guid(keyId);
+            DataTable dt = TreeGridJsonParser.JsonToDataTable(json);
+            
+            
+            ExpressionService.SaveFormulas(id, dt);
         }
 
         /// <summary>

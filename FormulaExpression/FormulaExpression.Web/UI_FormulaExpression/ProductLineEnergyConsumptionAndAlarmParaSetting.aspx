@@ -563,7 +563,44 @@
 	            });
 	        };
 
-	        ///////////////////////////////////////////////////////////////////////
+	        //////////////////////////////////////////////////////////////////////
+
+	        // 暂存
+	        function temporarySave() {
+	            var keyId = $.getUrlParam('keyId');
+
+	            if ($('#formulaGroupName').validatebox('isValid') == false)
+	                return;
+
+	            var queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/UpdateFormulaGroupName';
+	            var dataToSend = '{"keyId":"' + keyId + '","name":\'' + ($('#formulaGroupName').val()) + '\'}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                }
+	            });
+
+	            queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/SaveFormulasWithTreeGridFormat';
+	            dataToSend = '{"keyId":"' + keyId + '","json":\'' + JSON.stringify($('#tgformulaEditor').treegrid('getData')) + '\'}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                    $.messager.alert('消息', '暂存成功。', 'info');
+	                }
+	            });
+	        }
+
+	        //////////////////////////////////////////////////////////////////////
 
 	        $(document).ready(function () {
 	            var keyId = $.getUrlParam('keyId');

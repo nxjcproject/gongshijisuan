@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FormulaGroups.aspx.cs" Inherits="FormulaExpression.Web.UI_FormulaExpression.FormulaGroups" %>
+<%@ Register Src="~/Common/OrganisationTree.ascx" TagPrefix="uc1" TagName="OrganisationTree" %>
 
 <!DOCTYPE html>
 
@@ -17,6 +18,9 @@
 </head>
 <body class="easyui-layout">
     <form id="form1" runat="server">
+    <div data-options="region:'west',split:true,title:'组织机构'" style="width:200px;padding:2px;">
+        <uc1:OrganisationTree runat="server" ID="OrganisationTree" />
+    </div>
 	<div data-options="region:'east',split:true,title:'公式组使用状态'" style="width:40%;padding:2px;">
 	    <table id="formulaGroupsEffectived" class="easyui-datagrid" title="正在使用中的公式组" style="width:100%;height:33%"
 			    data-options="singleSelect:true,collapsible:true">
@@ -87,14 +91,16 @@
 	        return '<a href="ProductLineEnergyConsumptionAndAlarmParaSetting.aspx?organizationId=' + organizationId + '&keyId=' + row.KeyID + '">编辑</a>';
 	    }
 
-	    $(document).ready(function () {
+        // 当前所选组织机构ID
+	    var organizationId;
+
+	    function onOrganisationTreeClick(node) {
+	        organizationId = node.OrganizationID;
 	        loadFormulaGroups();
 	        loadFormulaGroupsEffectived();
 	        loadFormulaGroupsPendingEffectived();
 	        loadFormulaGroupsPendingExpiration();
-	    });
-
-	    var organizationId = 'c41b1f47-a48a-495f-a890-0aabb2f3bff7';
+	    }  
 
 	    // 所有公式组
 	    function loadFormulaGroups() {
@@ -195,8 +201,8 @@
 	    // 创建新公式组
 	    function createNewFormulaGroup() {
 	        var factoryId = 1;
-	        var queryUrl = 'FormulaService.asmx/CreateFormulaGroup';
-	        var dataToSend = '{factoryId: ' + factoryId + '}';
+	        var queryUrl = 'FormulaGroups.aspx/CreateFormulaGroup';
+	        var dataToSend = '{organizationId: ' + organizationId + '}';
 
 	        $.ajax({
 	            type: "POST",

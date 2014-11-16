@@ -182,16 +182,16 @@ namespace FormulaExpression.Service
         /// <summary>
         /// 更新公式组名称
         /// </summary>
-        /// <param name="groupId"></param>
+        /// <param name="keyId"></param>
         /// <param name="name"></param>
-        public static void SaveFormulaGroupName(Guid groupId, string name)
+        public static void SaveFormulaGroupName(Guid keyId, string name)
         {
             string connectionString = ConnectionStringFactory.NXJCConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = connection.CreateCommand();
-                command.CommandText = "UPDATE tz_Formula SET Name = '" + name + "' WHERE KeyID = '" + groupId.ToString() + "'";
+                command.CommandText = "UPDATE tz_Formula SET Name = '" + name + "' WHERE KeyID = '" + keyId.ToString() + "'";
 
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -202,30 +202,29 @@ namespace FormulaExpression.Service
         /// <summary>
         /// 保存公式
         /// </summary>
-        /// <param name="groupId"></param>
+        /// <param name="keyId"></param>
         /// <param name="data"></param>
-        public static void SaveFormulas(Guid groupId, DataTable data)
+        public static void SaveFormulas(Guid keyId, DataTable data)
         {
             string connectionString = ConnectionStringFactory.NXJCConnectionString;
 
             // 删除现存公式
             ISqlServerDataFactory factory = new SqlServerDataFactory(connectionString);
-            Delete delete = new Delete("Formula");
-            delete.AddCriterions("GroupID", groupId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
+            Delete delete = new Delete("formula_FormulaDetail");
+            delete.AddCriterions("KeyID", keyId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
             factory.Remove(delete);
 
-            // 插入所有公式
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = connection.CreateCommand();
+            DataColumn keyIdCol = new DataColumn("KeyID");
+            keyIdCol.DataType = typeof(Guid);
+            data.Columns.Add(keyIdCol);
+            keyIdCol.SetOrdinal(0);
 
-                connection.Open();
-                foreach (DataRow row in data.Rows)
-                {
-                    command.CommandText = "INSERT INTO Formula (GroupID, LevelCode, Name, Formula) VALUES ('" + groupId.ToString() + "', '" + row["LevelCode"].ToString() + "','" + row["Name"].ToString() + "','" + row["Formula"].ToString() + "')";
-                    command.ExecuteNonQuery();
-                }
+            foreach (DataRow row in data.Rows)
+            {
+                row[keyIdCol] = keyId;
             }
+            // 插入所有公式
+            factory.Save("formula_FormulaDetail", data);
         }
     }
 }
