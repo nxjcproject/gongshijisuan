@@ -30,7 +30,7 @@
 
         <div class="easyui-panel" style="width:100%;padding:5px;margin-top:5px;margin-bottom:5px;">
             报警周期：
-            <select id="cc" class="easyui-combobox" name="dept" style="width:100px;">
+            <select id="alarmPeriod" class="easyui-combobox" name="dept" style="width:100px;">
                 <option value="5">&nbsp;5 分钟</option>
                 <option value="10">10 分钟</option>
                 <option value="20">20 分钟</option>
@@ -42,9 +42,9 @@
                 <option value="480">&nbsp;8 小时</option>
             </select>
             熟料实物煤耗报警值（kg/t）：
-            <input id="Text1" class="easyui-validatebox textbox" data-options="required:true"  style="width:100px;"/>
+            <input id="coalAlarmValue" class="easyui-validatebox textbox" data-options="required:true"  style="width:100px;"/>
             相关参数: 
-            <input id="Text2" class="easyui-validatebox textbox" data-options="required:true"  style="width:220px;"/>
+            <input id="coalRelativeParas" class="easyui-validatebox textbox" data-options="required:true"  style="width:220px;"/>
         </div>
 
 	    <table id="tgformulaEditor" class="easyui-treegrid" title="公式录入" style="width:100%;height:450px"
@@ -565,17 +565,21 @@
 
 	        //////////////////////////////////////////////////////////////////////
 
+	        var saveSuccessed = true;
+
 	        // 暂存
 	        function temporarySave() {
 	            var keyId = $.getUrlParam('keyId');
+	            saveSuccessed = true;
+
                 // 保存设置名称
-	            saveFormulasName(keyId);
+	            //saveFormulasName(keyId);
                 // 保存报警周期
-	            saveAlarmPeriod(keyId);
+	            //saveAlarmPeriod(keyId);
                 // 保存煤耗报警设置
 	            saveCoalConsumptionAlarm(keyId);
                 // 保存能耗公式与报警设置
-	            saveEnergyConsumptionAlarm(keyId);
+	            //saveEnergyConsumptionAlarm(keyId);
 	        }
 
 	        // 提交
@@ -604,7 +608,18 @@
 
 	        // 保存报警周期
 	        function saveAlarmPeriod(keyId) {
-	            alert('saveAlarmPeriod');
+	            queryUrl = 'FormulaGroups.aspx/SaveAlarmPeriod';
+	            dataToSend = '{"keyId":"' + keyId + '","minutes":"' + $('#alarmPeriod').combobox('getValues') + '"}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                }
+	            });
 	        }
 
             // 保存能耗公式与报警设置
@@ -619,7 +634,6 @@
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
 	                success: function (msg) {
-	                    $.messager.alert('消息', '暂存成功。', 'info');
 	                }
 	            });
 	        }
@@ -627,7 +641,7 @@
             // 保存熟料实物煤耗报警
 	        function saveCoalConsumptionAlarm(keyId) {
 	            queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/SaveCoalConsumptionAlarm';
-	            dataToSend = '{"keyId":"' + keyId + '","json":\'' + JSON.stringify($('#tgformulaEditor').treegrid('getData')) + '\'}';
+	            dataToSend = '{"keyId":"' + keyId + '","alarmValue":"' + $('#coalAlarmValue').val() + '", "relativeParas":"' + $('#coalRelativeParas').val() + '"}';
 
 	            $.ajax({
 	                type: "POST",
@@ -636,7 +650,6 @@
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
 	                success: function (msg) {
-	                    $.messager.alert('消息', '暂存成功。', 'info');
 	                }
 	            });
 	        }

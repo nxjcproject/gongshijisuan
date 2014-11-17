@@ -54,10 +54,11 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         /// 保存报警周期
         /// </summary>
         /// <param name="keyId"></param>
-        /// <param name="json"></param>
+        /// <param name="minutes"></param>
         [WebMethod]
-        public static void SaveAlarmPeriod(string keyId, string json)
+        public static void SaveAlarmPeriod(string keyId, string minutes)
         {
+            ExpressionService.SaveAlarmPeriod(new Guid(keyId), int.Parse(minutes));
         }
     }
 }

@@ -92,11 +92,12 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         /// 保存煤耗报警设置
         /// </summary>
         /// <param name="keyId"></param>
-        /// <param name="json"></param>
+        /// <param name="alarmValue"></param>
+        /// <param name="relativeParas"></param>
         [WebMethod]
-        public static void SaveCoalConsumptionAlarm(string keyId, string json)
+        public static void SaveCoalConsumptionAlarm(string keyId, string alarmValue, string relativeParas)
         {
-
+            ExpressionService.SaveCoalConsumptionAlarm(new Guid(keyId), int.Parse(alarmValue), relativeParas);
         }
 
         /// <summary>

@@ -200,6 +200,25 @@ namespace FormulaExpression.Service
         }
 
         /// <summary>
+        /// 更新报警周期
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="minutes"></param>
+        public static void SaveAlarmPeriod(Guid keyId, int minutes)
+        {
+            string connectionString = ConnectionStringFactory.NXJCConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "UPDATE tz_Formula SET AlarmPeriod = " + minutes + " WHERE KeyID = '" + keyId.ToString() + "'";
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// 保存公式
         /// </summary>
         /// <param name="keyId"></param>
@@ -228,6 +247,32 @@ namespace FormulaExpression.Service
             }
             // 插入所有公式
             factory.Save("formula_FormulaDetail", data);
+        }
+
+        /// <summary>
+        /// 保存煤耗报警设置
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="alarmValue"></param>
+        /// <param name="relativeParas"></param>
+        public static void SaveCoalConsumptionAlarm(Guid keyId, int alarmValue, string relativeParas)
+        {
+            string connectionString = ConnectionStringFactory.NXJCConnectionString;
+
+            // 删除现存公式
+            ISqlServerDataFactory factory = new SqlServerDataFactory(connectionString);
+            Delete delete = new Delete("formula_ConsumptionAlarmSetting");
+            delete.AddCriterions("KeyID", keyId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
+            factory.Remove(delete);
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO formula_ConsumptionAlarmSetting (KeyID, CoalAlarmValue, RelativeParameters) VALUES ('" + keyId.ToString() + "', " + alarmValue + ", '" + relativeParas + "')";
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
