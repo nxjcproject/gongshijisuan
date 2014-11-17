@@ -214,10 +214,13 @@ namespace FormulaExpression.Service
             delete.AddCriterions("KeyID", keyId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
             factory.Remove(delete);
 
-            DataColumn keyIdCol = new DataColumn("KeyID");
-            keyIdCol.DataType = typeof(Guid);
+            DataColumn keyIdCol = new DataColumn("KeyID", typeof(Guid));
             data.Columns.Add(keyIdCol);
             keyIdCol.SetOrdinal(0);
+
+            DataColumn idCol = new DataColumn("ID", typeof(Guid));
+            data.Columns.Add(idCol);
+            idCol.SetOrdinal(0);
 
             foreach (DataRow row in data.Rows)
             {

@@ -25,7 +25,7 @@
 		    名称：<input id="formulaGroupName" class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,50]'" /> | 
 
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'" onclick="temporarySave()">暂存</a> 
-            <a href="javascript:void(0)" class="easyui-linkbutton c4 easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-ok'" title="提交后不可修改，请谨慎操作。" onclick="">提交</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c4 easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-ok'" title="提交后不可修改，请谨慎操作。" onclick="commit()">提交</a>
 	    </div>
 
         <div class="easyui-panel" style="width:100%;padding:5px;margin-top:5px;margin-bottom:5px;">
@@ -568,7 +568,23 @@
 	        // 暂存
 	        function temporarySave() {
 	            var keyId = $.getUrlParam('keyId');
+                // 保存设置名称
+	            saveFormulasName(keyId);
+                // 保存报警周期
+	            saveAlarmPeriod(keyId);
+                // 保存煤耗报警设置
+	            saveCoalConsumptionAlarm(keyId);
+                // 保存能耗公式与报警设置
+	            saveEnergyConsumptionAlarm(keyId);
+	        }
 
+	        // 提交
+	        function commit() {
+	            alert("commit");
+	        }
+
+            // 保存设置名称
+	        function saveFormulasName(keyId) {
 	            if ($('#formulaGroupName').validatebox('isValid') == false)
 	                return;
 
@@ -584,8 +600,33 @@
 	                success: function (msg) {
 	                }
 	            });
+	        }
 
+	        // 保存报警周期
+	        function saveAlarmPeriod(keyId) {
+	            alert('saveAlarmPeriod');
+	        }
+
+            // 保存能耗公式与报警设置
+	        function saveEnergyConsumptionAlarm(keyId) {
 	            queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/SaveFormulasWithTreeGridFormat';
+	            dataToSend = '{"keyId":"' + keyId + '","json":\'' + JSON.stringify($('#tgformulaEditor').treegrid('getData')) + '\'}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                    $.messager.alert('消息', '暂存成功。', 'info');
+	                }
+	            });
+	        }
+
+            // 保存熟料实物煤耗报警
+	        function saveCoalConsumptionAlarm(keyId) {
+	            queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/SaveCoalConsumptionAlarm';
 	            dataToSend = '{"keyId":"' + keyId + '","json":\'' + JSON.stringify($('#tgformulaEditor').treegrid('getData')) + '\'}';
 
 	            $.ajax({

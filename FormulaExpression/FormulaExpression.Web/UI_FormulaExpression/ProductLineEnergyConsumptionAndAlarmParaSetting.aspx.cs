@@ -85,8 +85,18 @@ namespace FormulaExpression.Web.UI_FormulaExpression
             Guid id = new Guid(keyId);
             DataTable dt = TreeGridJsonParser.JsonToDataTable(json);
             
-            
             ExpressionService.SaveFormulas(id, dt);
+        }
+
+        /// <summary>
+        /// 保存煤耗报警设置
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="json"></param>
+        [WebMethod]
+        public static void SaveCoalConsumptionAlarm(string keyId, string json)
+        {
+
         }
 
         /// <summary>

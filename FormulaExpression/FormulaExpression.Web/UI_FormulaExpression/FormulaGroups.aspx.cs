@@ -50,5 +50,14 @@ namespace FormulaExpression.Web.UI_FormulaExpression
             return DataGridJsonParser.DataTableToJson(formulaGroups, "KeyID", "Name", "CreatedDate", "State", "EffectiveDate", "ExpirationDate");
         }
 
+        /// <summary>
+        /// 保存报警周期
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <param name="json"></param>
+        [WebMethod]
+        public static void SaveAlarmPeriod(string keyId, string json)
+        {
+        }
     }
 }
