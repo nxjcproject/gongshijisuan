@@ -13,6 +13,26 @@ namespace FormulaExpression.Web.UI_FormulaExpression
 {
     public partial class FormulaGroups : System.Web.UI.Page
     {
+        public bool IsAdministrator
+        {
+            get { return true; }
+        }
+
+        public bool CanAdd
+        {
+            get { return true; }
+        }
+
+        public bool CanEdit
+        {
+            get { return true; }
+        }
+
+        public bool CanDelete
+        {
+            get { return true; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -59,6 +79,15 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         public static void SaveAlarmPeriod(string keyId, string minutes)
         {
             ExpressionService.SaveAlarmPeriod(new Guid(keyId), int.Parse(minutes));
+        }
+
+        [WebMethod]
+        public static string CreateFormulaGroup(string organizationId)
+        {
+            Guid id = ExpressionService.CreateNewFormulaGroup(organizationId);
+
+            return "{\"keyId\":\"" + id.ToString() + "\"}";
+
         }
     }
 }

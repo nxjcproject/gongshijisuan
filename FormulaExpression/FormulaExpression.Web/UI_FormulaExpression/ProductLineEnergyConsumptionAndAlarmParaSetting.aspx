@@ -471,6 +471,29 @@
 	            });
 	        }
 
+	        // 按公式组获取煤耗报警
+	        function loadCoalConsumptionAlarm(keyId) {
+	            var queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/GetCoalConsumptionAlarm';
+	            var dataToSend = '{keyId: "' + keyId + '"}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                    initializeCoalConsumptionAlarm(jQuery.parseJSON(msg.d));
+	                }
+	            });
+	        }
+
+	        // 初始化煤耗报警
+	        function initializeCoalConsumptionAlarm(jsonData) {
+	            $('#coalAlarmValue').val(jsonData.alarmValue);
+	            $('#coalRelativeParas').val(jsonData.relativeParas);
+	        }
+
 	        // 按公式组获取所有公式
 	        function loadFormulas(keyId) {
 	            var queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/GetFormulasWithTreeGridFormat';
@@ -573,13 +596,13 @@
 	            saveSuccessed = true;
 
                 // 保存设置名称
-	            //saveFormulasName(keyId);
+	            saveFormulasName(keyId);
                 // 保存报警周期
-	            //saveAlarmPeriod(keyId);
+	            saveAlarmPeriod(keyId);
                 // 保存煤耗报警设置
 	            saveCoalConsumptionAlarm(keyId);
                 // 保存能耗公式与报警设置
-	            //saveEnergyConsumptionAlarm(keyId);
+	            saveEnergyConsumptionAlarm(keyId);
 	        }
 
 	        // 提交
@@ -661,6 +684,7 @@
 	            var organizationId = $.getUrlParam('organizationId');
 
 	            loadName(keyId);
+	            loadCoalConsumptionAlarm(keyId);
 	            loadFormulas(keyId);
 	            loadFormulaGroups(organizationId);
 	            loadAmmeters(organizationId);

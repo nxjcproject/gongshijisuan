@@ -74,21 +74,35 @@
 	    </table>
     </div>
 	<script type="text/javascript">
-	    var toolbar = [{
+	    var toolbar = [
+        <% if(CanAdd) { %>
+        {
 	        text: '新增公式组',
 	        iconCls: 'icon-add',
 	        handler: createNewFormulaGroup
-	    }, '-', {
+        }
+        <% }%>
+        <% if(CanAdd && CanDelete) {%>
+        , '-',
+        <% }%>
+        <% if(CanDelete) { %>
+        {
 	        text: '删除公式组',
 	        iconCls: 'icon-clear',
 	        handler: function () { alert('save') }
-	    }];
+        }
+        <% }%>
+	    ];
 
 	    function formatState(val, row) {
 	        return '暂存';
 	    }
 	    function formatAction(val, row) {
+            <% if(CanEdit) { %>
 	        return '<a href="ProductLineEnergyConsumptionAndAlarmParaSetting.aspx?organizationId=' + organizationId + '&keyId=' + row.KeyID + '">编辑</a>';
+	        <% } else {%>
+	        return '无操作';
+            <% }%>
 	    }
 
         // 当前所选组织机构ID
@@ -197,12 +211,12 @@
 	            dataType: "json"
 	        });
 	    }
-
+        
+        <% if(CanAdd) {%>
 	    // 创建新公式组
 	    function createNewFormulaGroup() {
-	        var factoryId = 1;
 	        var queryUrl = 'FormulaGroups.aspx/CreateFormulaGroup';
-	        var dataToSend = '{organizationId: ' + organizationId + '}';
+	        var dataToSend = '{organizationId: "' + organizationId + '"}';
 
 	        $.ajax({
 	            type: "POST",
@@ -211,10 +225,11 @@
 	            contentType: "application/json; charset=utf-8",
 	            dataType: "json",
 	            success: function (msg) {
-	                self.location = 'FormulaEditor.aspx?groupId=' + jQuery.parseJSON(msg.d).groupId;
+	                self.location = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx?organizationId=' + organizationId + '&keyId=' + jQuery.parseJSON(msg.d).keyId;
 	            }
 	        });
 	    }
+        <% }%>
 	</script>
     </form>
 </body>

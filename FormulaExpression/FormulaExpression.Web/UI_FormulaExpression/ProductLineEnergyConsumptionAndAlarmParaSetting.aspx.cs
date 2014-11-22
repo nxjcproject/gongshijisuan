@@ -52,6 +52,21 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         }
 
         /// <summary>
+        /// 获取煤耗报警
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public static string GetCoalConsumptionAlarm(string keyId)
+        {
+            Guid id = new Guid(keyId);
+            DataTable dt = ExpressionService.GetCoalConsumptionAlarm(id);
+            string alarmValue = dt.Rows[0]["CoalAlarmValue"].ToString();
+            string relativeParas = dt.Rows[0]["RelativeParameters"].ToString();
+            return "{\"alarmValue\":\"" + alarmValue + "\",\"relativeParas\":\"" + relativeParas + "\"}";
+        }
+
+        /// <summary>
         /// 获取所有公式
         /// </summary>
         /// <param name="keyId"></param>

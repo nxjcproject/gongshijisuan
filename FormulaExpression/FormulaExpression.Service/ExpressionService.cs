@@ -125,6 +125,22 @@ namespace FormulaExpression.Service
         }
 
         /// <summary>
+        /// 按公式组KeyID获取熟料实物煤耗报警设置
+        /// </summary>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        public static DataTable GetCoalConsumptionAlarm(Guid keyId)
+        {
+            string connectionString = ConnectionStringFactory.NXJCConnectionString;
+
+            ISqlServerDataFactory factory = new SqlServerDataFactory(connectionString);
+            Query query = new Query("formula_ConsumptionAlarmSetting");
+            query.AddCriterion("KeyID", keyId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
+
+            return factory.Query(query);
+        }
+
+        /// <summary>
         /// 按公式组KeyID获取所有公式
         /// </summary>
         /// <param name="keyId"></param>
@@ -158,10 +174,10 @@ namespace FormulaExpression.Service
         }
 
         /// <summary>
-        /// 按分厂ID新建公式组
+        /// 按组织机构ID新建公式组
         /// </summary>
         /// <param name="organizationId"></param>
-        public static Guid CreateNewFormulaGroup(int organizationId)
+        public static Guid CreateNewFormulaGroup(string organizationId)
         {
             Guid id = Guid.NewGuid();
 
@@ -170,7 +186,7 @@ namespace FormulaExpression.Service
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = connection.CreateCommand();
-                command.CommandText = "INSERT INTO tz_Formula (KeyID, FactoryID, Name, CreateDate, State) VALUES ('" + id.ToString() + "', " + organizationId + ", '新公式组', '" + DateTime.Now.ToString() + "', 1)";
+                command.CommandText = "INSERT INTO tz_Formula (KeyID, OrganizationID, Name, CreatedDate, State) VALUES ('" + id.ToString() + "', '" + organizationId + "', '新公式组', '" + DateTime.Now.ToString() + "', 1)";
 
                 connection.Open();
                 command.ExecuteNonQuery();
