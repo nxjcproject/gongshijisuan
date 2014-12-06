@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace FormulaExpression.Web.Common {
+namespace FormulaExpression.Web.UI_FormulaExpression.Common {
     
     
     public partial class OrganisationTree {

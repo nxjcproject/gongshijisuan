@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="OrganisationTree.ascx.cs" Inherits="FormulaExpression.Web.Common.OrganisationTree" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="OrganisationTree.ascx.cs" Inherits="FormulaExpression.Web.Common.UI_FormulaExpression.OrganisationTree" %>
 
 <ul id="organisationTree" class="easyui-tree"></ul>
 

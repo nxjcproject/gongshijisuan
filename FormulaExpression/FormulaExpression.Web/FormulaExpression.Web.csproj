@@ -60,8 +60,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Common\OrganisationService.asmx" />
-    <Content Include="Common\OrganisationTree.ascx" />
+    <Content Include="UI_FormulaExpression\Common\OrganisationService.asmx" />
+    <Content Include="UI_FormulaExpression\Common\OrganisationTree.ascx" />
     <Content Include="css\page\Default.css" />
     <Content Include="css\page\login.css" />
     <Content Include="js\common\jquery.utility.js" />
@@ -1577,15 +1577,15 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\OrganisationService.asmx.cs">
+    <Compile Include="UI_FormulaExpression\Common\OrganisationService.asmx.cs">
       <DependentUpon>OrganisationService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\OrganisationTree.ascx.cs">
+    <Compile Include="UI_FormulaExpression\Common\OrganisationTree.ascx.cs">
       <DependentUpon>OrganisationTree.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Common\OrganisationTree.ascx.designer.cs">
+    <Compile Include="UI_FormulaExpression\Common\OrganisationTree.ascx.designer.cs">
       <DependentUpon>OrganisationTree.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1607,6 +1607,7 @@
   <ItemGroup>
     <Content Include="lib\pllib\syntaxhighlighter\LGPL-LICENSE" />
     <Content Include="lib\pllib\syntaxhighlighter\MIT-LICENSE" />
+    <None Include="Properties\PublishProfiles\Release_LenovoPC.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

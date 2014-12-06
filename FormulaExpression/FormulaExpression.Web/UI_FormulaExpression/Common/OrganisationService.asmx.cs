@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 
-namespace FormulaExpression.Web.Common
+namespace FormulaExpression.Web.UI_FormulaExpression.Common
 {
     /// <summary>
     /// OrganisationService 的摘要说明
