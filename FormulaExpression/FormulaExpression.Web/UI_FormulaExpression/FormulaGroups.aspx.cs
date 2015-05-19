@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 
 namespace FormulaExpression.Web.UI_FormulaExpression
 {
-    public partial class FormulaGroups : System.Web.UI.Page
+    public partial class FormulaGroups : WebStyleBaseForEnergy.webStyleBase
     {
         public bool IsAdministrator
         {
@@ -35,7 +35,17 @@ namespace FormulaExpression.Web.UI_FormulaExpression
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            base.InitComponts();
 
+            ////////////////////调试用,自定义的数据授权
+#if DEBUG
+            List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc" };
+            AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
+#elif RELEASE
+#endif
+            this.OrganisationTree_ProductionLine.Organizations = GetDataValidIdGroup("ProductionOrganization");                         // 向web用户控件传递数据授权参数
+            this.OrganisationTree_ProductionLine.PageName = "FormulaGroups.aspx";                                                       // 向web用户控件传递当前调用的页面名称
+            //this.OrganisationTree_ProductionLine.LeveDepth = 5;
         }
 
         [WebMethod]

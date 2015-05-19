@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FormulaGroups.aspx.cs" Inherits="FormulaExpression.Web.UI_FormulaExpression.FormulaGroups" %>
-<%@ Register Src="~/Common/OrganisationTree.ascx" TagPrefix="uc1" TagName="OrganisationTree" %>
+<%@ Register Src="/UI_WebUserControls/OrganizationSelector/OrganisationTree.ascx" TagName="OrganisationTree" TagPrefix="uc1" %>
 
 <!DOCTYPE html>
 
@@ -18,8 +18,8 @@
 </head>
 <body class="easyui-layout">
     <form id="form1" runat="server">
-    <div data-options="region:'west',split:true,title:'组织机构'" style="width:200px;padding:2px;">
-        <uc1:OrganisationTree runat="server" ID="OrganisationTree" />
+    <div data-options="region:'west',split:false" style="width:230px">
+        <uc1:OrganisationTree ID="OrganisationTree_ProductionLine" runat="server" />
     </div>
 	<div data-options="region:'east',split:true,title:'公式组使用状态'" style="width:40%;padding:2px;">
 	    <table id="formulaGroupsEffectived" class="easyui-datagrid" title="正在使用中的公式组" style="width:100%;height:33%"
@@ -82,7 +82,7 @@
 	        handler: createNewFormulaGroup
         }
         <% }%>
-        <% if(CanAdd && CanDelete) {%>
+        <% if(CanAdd && CanDelete) { %>
         , '-',
         <% }%>
         <% if(CanDelete) { %>
@@ -100,7 +100,7 @@
 	    function formatAction(val, row) {
             <% if(CanEdit) { %>
 	        return '<a href="ProductLineEnergyConsumptionAndAlarmParaSetting.aspx?organizationId=' + organizationId + '&keyId=' + row.KeyID + '">编辑</a>';
-	        <% } else {%>
+	        <% } else { %>
 	        return '无操作';
             <% }%>
 	    }
@@ -109,7 +109,7 @@
 	    var organizationId;
 
 	    function onOrganisationTreeClick(node) {
-	        organizationId = node.OrganizationID;
+	        organizationId = node.OrganizationId;
 	        loadFormulaGroups();
 	        loadFormulaGroupsEffectived();
 	        loadFormulaGroupsPendingEffectived();

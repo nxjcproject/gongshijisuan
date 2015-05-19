@@ -58,10 +58,20 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebStyleBaseForEnergy">
+      <HintPath>..\..\Lib\WebStyleBaseForEnergy.dll</HintPath>
+    </Reference>
+    <Reference Include="WebUserContorls.Web">
+      <HintPath>..\..\Lib\WebUserContorls.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="WebUserControls.Infrastructure">
+      <HintPath>..\..\Lib\WebUserControls.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="WebUserControls.Service">
+      <HintPath>..\..\Lib\WebUserControls.Service.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI_FormulaExpression\Common\OrganisationService.asmx" />
-    <Content Include="UI_FormulaExpression\Common\OrganisationTree.ascx" />
     <Content Include="css\page\Default.css" />
     <Content Include="css\page\login.css" />
     <Content Include="js\common\jquery.utility.js" />
@@ -1577,17 +1587,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI_FormulaExpression\Common\OrganisationService.asmx.cs">
-      <DependentUpon>OrganisationService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI_FormulaExpression\Common\OrganisationTree.ascx.cs">
-      <DependentUpon>OrganisationTree.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI_FormulaExpression\Common\OrganisationTree.ascx.designer.cs">
-      <DependentUpon>OrganisationTree.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI_FormulaExpression\FormulaGroups.aspx.cs">
       <DependentUpon>FormulaGroups.aspx</DependentUpon>
