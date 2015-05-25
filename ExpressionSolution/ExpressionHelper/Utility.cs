@@ -42,7 +42,7 @@ namespace ExpressionHelper
         /// <returns></returns>
         public static bool IsVariableIndicator(this char c)
         {
-            return (c == 'A' || c == 'S' || c == 'P');
+            return (c == 'A' || c == 'S' || c == 'P' || c == 'G');
         }
 
         /// <summary>

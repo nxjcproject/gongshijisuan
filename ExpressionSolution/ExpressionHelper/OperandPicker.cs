@@ -68,7 +68,7 @@ namespace ExpressionHelper
                 else if (currentChar == '-')
                     currentState = OperandPickerState.Negative;
 
-                else if (currentChar == 'A' || currentChar == 'S' || currentChar == 'P')
+                else if (currentChar == 'A' || currentChar == 'S' || currentChar == 'P' || currentChar == 'G')
                     currentState = OperandPickerState.Variable;
 
                 else
