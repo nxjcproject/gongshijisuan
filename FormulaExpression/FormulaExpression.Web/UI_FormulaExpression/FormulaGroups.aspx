@@ -250,7 +250,20 @@
 	        $.messager.confirm('确认', '确认删除选定公式组：' + row.Name + '？', function (r) {
 	            if (r) {
 	                var groupid = row.KeyID;
-	                alert(groupid);
+
+	                var queryUrl = 'FormulaGroups.aspx/DeleteFormulaGroup';
+	                var dataToSend = '{groupId: "' + groupid + '"}';
+
+	                $.ajax({
+	                    type: "POST",
+	                    url: queryUrl,
+	                    data: dataToSend,
+	                    contentType: "application/json; charset=utf-8",
+	                    dataType: "json",
+	                    success: function (msg) {
+	                        loadFormulaGroups(jQuery.parseJSON(msg.d));
+	                    }
+	                });
 	            }
 	        });
 	    }

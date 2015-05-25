@@ -99,5 +99,18 @@ namespace FormulaExpression.Web.UI_FormulaExpression
             return "{\"keyId\":\"" + id.ToString() + "\"}";
 
         }
+
+
+        /// <summary>
+        /// 删除公式组
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public static void DeleteFormulaGroup(string groupId)
+        {
+            Guid id = new Guid(groupId);
+            ExpressionService.DisableFormulasByGroupId(id);
+        }
     }
 }
