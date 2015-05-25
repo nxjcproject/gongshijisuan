@@ -40,6 +40,7 @@ namespace FormulaExpression.Service
             ISqlServerDataFactory factory = new SqlServerDataFactory(connectionString);
             Query query = new Query("tz_Formula");
             query.AddCriterion("OrganizationID", organizationId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
+            query.AddCriterion("ENABLE", true, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
 
             return factory.Query(query);
         }
@@ -57,12 +58,10 @@ namespace FormulaExpression.Service
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = connection.CreateCommand();
-                command.CommandText = @"SELECT  formula_Log.*, tz_Formula.*
-                                        FROM    tz_Formula INNER JOIN
-                                                formula_Log ON tz_Formula.KeyID = formula_Log.KeyID
-                                        WHERE   (tz_Formula.OrganizationID = @organizationId) AND ((formula_Log.EffectiveDate < { fn NOW() }) AND (formula_Log.ExpirationDate IS NULL) OR
-                                                                                                   (formula_Log.EffectiveDate < { fn NOW() }) AND (formula_Log.ExpirationDate > { fn NOW() })
-                                                )";
+                command.CommandText = @"SELECT  [formula_Log].*, [tz_Formula].*
+                                        FROM    [tz_Formula] INNER JOIN
+                                                [formula_Log] ON [tz_Formula].[KeyID] = [formula_Log].[KeyID]
+                                        WHERE   [tz_Formula].[OrganizationID] = @organizationId AND [tz_Formula].[ENABLE] = 1";
 
                 command.Parameters.Add(new SqlParameter("organizationId", organizationId));
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -249,9 +248,12 @@ namespace FormulaExpression.Service
             delete.AddCriterions("KeyID", keyId, SqlServerDataAdapter.Infrastruction.CriteriaOperator.Equal);
             factory.Remove(delete);
 
+            DataColumn variableIdCol = data.Columns["VariableId"];
+            variableIdCol.SetOrdinal(0);
+
             DataColumn keyIdCol = new DataColumn("KeyID", typeof(Guid));
             data.Columns.Add(keyIdCol);
-            keyIdCol.SetOrdinal(0);
+            keyIdCol.SetOrdinal(1);
 
             DataColumn idCol = new DataColumn("ID", typeof(Guid));
             data.Columns.Add(idCol);
@@ -285,6 +287,24 @@ namespace FormulaExpression.Service
             {
                 SqlCommand command = connection.CreateCommand();
                 command.CommandText = "INSERT INTO formula_ConsumptionAlarmSetting (KeyID, CoalAlarmValue, RelativeParameters) VALUES ('" + keyId.ToString() + "', " + alarmValue + ", '" + relativeParas + "')";
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// 根据公式组ID禁用公式组
+        /// </summary>
+        /// <param name="groupId"></param>
+        public static void DisableFormulasByGroupId(Guid groupId)
+        {
+            string connectionString = ConnectionStringFactory.NXJCConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "UPDATE tz_Formula SET ENABLE = 0 WHERE KeyID = '" + groupId.ToString() + "'";
 
                 connection.Open();
                 command.ExecuteNonQuery();

@@ -30,7 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExpressionHelper">
+    <Reference Include="ExpressionHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\ExpressionHelper.dll</HintPath>
     </Reference>
     <Reference Include="SqlServerDataAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmmeterService.cs" />
+    <Compile Include="EquipmentService.cs" />
     <Compile Include="ExpressionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

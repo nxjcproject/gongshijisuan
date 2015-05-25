@@ -21,6 +21,7 @@
     <div data-options="region:'west',split:false" style="width:230px">
         <uc1:OrganisationTree ID="OrganisationTree_ProductionLine" runat="server" />
     </div>
+    <!-- 审核需求未明确，以下为原型，可供参考
 	<div data-options="region:'east',split:true,title:'公式组使用状态'" style="width:40%;padding:2px;">
 	    <table id="formulaGroupsEffectived" class="easyui-datagrid" title="正在使用中的公式组" style="width:100%;height:33%"
 			    data-options="singleSelect:true,collapsible:true">
@@ -59,6 +60,7 @@
 		    </thead>
 	    </table>
 	</div>
+    -->
     <div data-options="region:'center'" style="padding:2px;">
 	    <table id="formulaGroups" class="easyui-datagrid" title="公式组列表" style="width:100%;height:100%"
 			    data-options="rownumbers:true,singleSelect:true,toolbar:toolbar">
@@ -67,7 +69,7 @@
 				    <th data-options="field:'KeyID',hidden:true"></th>
 				    <th data-options="field:'Name',width:260">公式组名称</th>
 				    <th data-options="field:'CreatedDate',width:120">创建时间</th>
-				    <th data-options="field:'State',width:80,formatter:formatState">状态</th>
+				    <th data-options="field:'State',hidden:true,width:80,formatter:formatState">状态</th>
                     <th data-options="field:'unitcost',width:80,formatter:formatAction">操作</th>
 			    </tr>
 		    </thead>
@@ -75,6 +77,8 @@
     </div>
 	<script type="text/javascript">
 	    var toolbar = [
+        <% // 已加入权限控制，CanAdd/CanDelete，权限获得请看后台程序。 %>
+
         <% if(CanAdd) { %>
         {
 	        text: '新增公式组',
@@ -89,7 +93,7 @@
         {
 	        text: '删除公式组',
 	        iconCls: 'icon-clear',
-	        handler: function () { alert('save') }
+	        handler: deleteFormulaGroup
         }
         <% }%>
 	    ];
@@ -111,9 +115,11 @@
 	    function onOrganisationTreeClick(node) {
 	        organizationId = node.OrganizationId;
 	        loadFormulaGroups();
-	        loadFormulaGroupsEffectived();
-	        loadFormulaGroupsPendingEffectived();
-	        loadFormulaGroupsPendingExpiration();
+
+            // 审核需求未明确，以下为原型，可供参考
+	        //loadFormulaGroupsEffectived();
+	        //loadFormulaGroupsPendingEffectived();
+	        //loadFormulaGroupsPendingExpiration();
 	    }  
 
 	    // 所有公式组
@@ -229,7 +235,27 @@
 	            }
 	        });
 	    }
+	    <% }%>
+
+        <% if(CanDelete) { %>
+	    // 删除选定公式组（因审核未做，其实这里仅仅是禁用。）
+	    function deleteFormulaGroup() {
+	        var row = $('#formulaGroups').datagrid('getSelected');
+
+	        if (row == null) {
+	            $.messager.alert('提示', '未选中任何行', 'error');
+	            return;
+	        }
+
+	        $.messager.confirm('确认', '确认删除选定公式组：' + row.Name + '？', function (r) {
+	            if (r) {
+	                var groupid = row.KeyID;
+	                alert(groupid);
+	            }
+	        });
+	    }
         <% }%>
+
 	</script>
     </form>
 </body>

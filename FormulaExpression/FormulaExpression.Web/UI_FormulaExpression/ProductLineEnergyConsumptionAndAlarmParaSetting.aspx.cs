@@ -86,7 +86,7 @@ namespace FormulaExpression.Web.UI_FormulaExpression
                     row["ParentID"] = levelcode.Substring(0, levelcode.Length - 2);
             }
 
-            return TreeGridJsonParser.DataTableToJson(formulas, "LevelCode", "ParentID", "Name", "Formula", "Denominator", "Required", "AlarmType", "EnergyAlarmValue", "PowerAlarmValue", "RelativeParameters", "Remarks");
+            return TreeGridJsonParser.DataTableToJson(formulas, "LevelCode", "ParentID", "VariableId", "LevelType", "Name", "SaveToHistory", "Formula", "Denominator", "CoalDustConsumption", "Required", "AlarmType", "EnergyAlarmValue", "PowerAlarmValue", "CoalDustConsumptionAlarm", "RelativeParameters", "Remarks");
         }
 
         /// <summary>
@@ -113,6 +113,19 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         public static void SaveCoalConsumptionAlarm(string keyId, string alarmValue, string relativeParas)
         {
             ExpressionService.SaveCoalConsumptionAlarm(new Guid(keyId), int.Parse(alarmValue), relativeParas);
+        }
+
+        /// <summary>
+        /// 获取设备信息
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public static string GetEquipmentsWithTreeGridFormat(string organizationId)
+        {
+            DataTable dt = EquipmentService.GetEquipmentsByOrganizationId(organizationId);
+
+            return TreeGridJsonParser.DataTableToJson(dt, "PowerSupply", new string[] { "VariableId", "EquipmentName", "PowerSupply" });
         }
 
         /// <summary>

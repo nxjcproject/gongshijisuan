@@ -17,15 +17,13 @@
     <script type="text/javascript" src="/lib/ealib/easyui-lang-zh_CN.js" charset="utf-8"></script>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div id="wrapper" class="easyui-panel" style="width:98%;height:auto;padding:2px;">
-
+    <div id="wrapper" class="easyui-panel" style="width:100%;height:auto;padding:2px;">
 	    <div class="easyui-panel" style="width:100%;padding:5px;">
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-back'" onclick="javascript:history.go(-1);">返回</a> | 
 		    名称：<input id="formulaGroupName" class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,50]'" /> | 
 
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'" onclick="temporarySave()">暂存</a> 
-            <a href="javascript:void(0)" class="easyui-linkbutton c4 easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-ok'" title="提交后不可修改，请谨慎操作。" onclick="commit()">提交</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'" onclick="temporarySave()">保存</a> 
+            <!--<a href="javascript:void(0)" class="easyui-linkbutton c4 easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-ok'" title="提交后不可修改，请谨慎操作。" onclick="commit()">提交</a>-->
 	    </div>
 
         <div class="easyui-panel" style="width:100%;padding:5px;margin-top:5px;margin-bottom:5px;">
@@ -62,14 +60,19 @@
 			    ">
 		    <thead>
 			    <tr>
-                    <th data-options="field:'LevelCode',width:50">层次码</th>
+                    <th data-options="field:'VariableId',width:80,editor:'text'">变量ID</th>
+                    <th data-options="field:'LevelCode',width:50,editor:'text'">层次码</th>
+                    <th data-options="field:'LevelType',hidden:true">LevelType</th>
 				    <th data-options="field:'Name',width:100,editor:'text'">工序设备名称</th>
+                    <th data-options="field:'SaveToHistory',hidden:true">SaveToHistory</th>
 				    <th data-options="field:'Formula',width:100,formatter:formatFormula,editor:'text'">电量公式</th>
                     <th data-options="field:'Denominator',width:100,formatter:formatFormula,editor:'text'">电耗公式（分母）</th>
+                    <th data-options="field:'CoalDustConsumption',width:100,formatter:formatFormula,editor:'text'">煤耗公式</th>
                     <th data-options="field:'Required',hidden:true">必选</th>
                     <th data-options="field:'AlarmType',width:50,editor:'text'">报警类型</th>
                     <th data-options="field:'EnergyAlarmValue',width:50,editor:'text'">能耗报警值</th>
                     <th data-options="field:'PowerAlarmValue',width:50,editor:'text'">功率报警值</th>
+                    <th data-options="field:'CoalDustConsumptionAlarm',width:50,editor:'text'">煤耗报警值</th>
                     <th data-options="field:'RelativeParameters',width:100,editor:'text'">相关参数</th>
                     <th data-options="field:'Remarks',width:100,editor:'text'">备注</th>
 			    </tr>
@@ -78,14 +81,15 @@
 
 	    <div class="easyui-panel" style="width:100%;padding:5px;margin-top:5px;">
             <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="appendRoot()">添加根工序</a> | 
-            <a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-reload'" title="从其他公式组载入。" onclick="$('#dlgLoad').dialog('open')">载入</a> | 
+            <a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-reload'" title="从其他公式组载入。" onclick="$('#dlgLoad').dialog('open')">载入</a><!-- | 
             <a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-filter'" title="查看可用的电表变量。" onclick="$('#dlgAmmeter').dialog('open')">电表变量表</a> 
-            <a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-filter'" title="查看可用的累积量变量。" onclick="$('#dlgCumulant').dialog('open')">累计量变量表</a> 
+            <a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip tooltip-f" data-options="plain:true,iconCls:'icon-filter'" title="查看可用的累积量变量。" onclick="$('#dlgCumulant').dialog('open')">累计量变量表</a> -->
 	    </div>
 
         <!-- 右键菜单开始 -->
 	    <div id="mm" class="easyui-menu" style="width:120px;">
-		    <div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+		    <div onclick="append()" data-options="iconCls:'icon-add'">添加子工序</div>
+            <div onclick="appendEquipment()" data-options="iconCls:'icon-add'">添加主要设备</div>
 		    <div onclick="removeIt()" data-options="iconCls:'icon-remove'">删除</div>
 		    <div class="menu-sep"></div>
             <div onclick="appendRoot()" data-options="iconCls:'icon-add'">添加根工序</div>
@@ -106,6 +110,12 @@
 		    <input id="denominatorEditor_textbox" class="easyui-textbox" style="width:100%" />
 		    <a href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;" data-options="iconCls:'icon-cancel'" onclick="$('#denominatorEditor').window('close');">取消</a>
 		    <a id="denominatorEditorSave" href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;margin-right:10px;" data-options="iconCls:'icon-ok'" onclick="denominatorEditorSave()">保存</a>
+	    </div>
+
+	    <div id="coaldustConsumptionEditor" class="easyui-window" title="煤耗公式编辑" data-options="closed:true,collapsible:false,minimizable:false,resizable:false,iconCls:'icon-sum'" style="width:800px;height:120px;padding:10px;">
+		    <input id="coaldustConsumptionEditor_textbox" class="easyui-textbox" style="width:100%" />
+		    <a href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;" data-options="iconCls:'icon-cancel'" onclick="$('#coaldustConsumptionEditor').window('close');">取消</a>
+		    <a id="coaldustConsumptionEditorSave" href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;margin-right:10px;" data-options="iconCls:'icon-ok'" onclick="coaldustConsumptionEditorSave()">保存</a>
 	    </div>
         <!-- 弹窗编辑结束 -->
 
@@ -129,6 +139,25 @@
 	        </table>
 	    </div>
         <!-- 载入公式组窗口结束 -->
+
+        <!-- 主要设备窗口开始 -->
+        <div id="dlgEquipment" class="easyui-dialog" title="主要设备" style="width:550px;height:500px;" 
+            data-options="
+                iconCls:'icon-filter',
+                modal:true,
+                closed:true
+            " >
+	        <table id="tgDevice" class="easyui-treegrid" style="width:100%;height:100%"
+			        data-options="idField:'guid',treeField:'VariableId',singleSelect:true,onDblClickRow:equipmentSelected">
+		        <thead>
+			        <tr>
+				        <th data-options="field:'VariableId',width:260">变量ID</th>
+				        <th data-options="field:'EquipmentName',width:260">设备名称</th>
+			        </tr>
+		        </thead>
+	        </table>
+	    </div>
+        <!-- 主要设备窗口结束 -->
 
         <!-- 电表变量表窗口开始 -->
         <div id="dlgAmmeter" class="easyui-dialog" title="电表变量表" style="width:550px;height:500px;" 
@@ -230,7 +259,11 @@
 	                    LevelCode: levelCode,
 	                    Name: '新工序',
 	                    Formula: '',
-	                    Denominator: ''
+	                    Denominator: '',
+                        CoalDustConsumption:'',
+	                    LevelType: 'Process',
+	                    SaveToHistory: true,
+	                    Required: false
 	                }]
 	            })
 	        }
@@ -245,7 +278,11 @@
 	                    LevelCode: levelCode,
 	                    Name: '新工序',
 	                    Formula: '',
-	                    Denominator: ''
+	                    Denominator: '',
+	                    CoalDustConsumption: '',
+	                    LevelType: 'Process',
+	                    SaveToHistory: true,
+	                    Required: false
 	                }]
 	            })
 	        }
@@ -254,7 +291,7 @@
 	        function removeIt() {
 	            var node = $('#tgformulaEditor').treegrid('getSelected');
                 // 不可删除必须的工序
-	            if (node.Required) {
+	            if (node.Required == true) {
 	                $.messager.alert('错误', '此项为系统必须，不可删除');
 	                return;
 	            }
@@ -277,6 +314,35 @@
 	            if (node) {
 	                $('#tgformulaEditor').treegrid('expand', node.LevelCode);
 	            }
+	        }
+
+            // 添加主要设备
+	        function appendEquipment() {
+	            $('#dlgEquipment').dialog('open');
+	        }
+
+	        function equipmentSelected(row) {
+	            // 条件判断
+	            if (row.EquipmentName == undefined)
+	                return;
+
+	            $('#dlgEquipment').dialog('close');
+	            var node = $('#tgformulaEditor').treegrid('getSelected');
+	            var levelCode = getAppendLevelCode(node.LevelCode);
+	            $('#tgformulaEditor').treegrid('append', {
+	                parent: node.LevelCode,
+	                data: [{
+	                    VariableId: row.VariableId,
+	                    LevelCode: levelCode,
+	                    Name: row.EquipmentName,
+	                    Formula: '',
+	                    Denominator: '',
+	                    CoalDustConsumption: '',
+	                    LevelType: 'MainMachine',
+	                    SaveToHistory: true,
+	                    Required: false
+	                }]
+	            });
 	        }
 
 	        ////////////////////////////////////////////////////////////////////////////////
@@ -389,6 +455,15 @@
 	                editor.target[0].onfocus = openDenominatorEditorWindow;
 	            }
 
+	            // 煤耗公式列
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'CoalDustConsumption'
+	            });
+	            if (editor != null) {
+	                editor.target[0].readOnly = true;
+	                editor.target[0].onfocus = openCoaldustConsumptionEditorWindow;
+	            }
 	        }
 
 	        // 弹出公式编辑窗口
@@ -411,6 +486,16 @@
 	            $('#denominatorEditor').window('open');
 	        }
 
+	        // 弹出煤耗公式编辑窗口
+	        function openCoaldustConsumptionEditorWindow() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'CoalDustConsumption'
+	            });
+	            $('#coaldustConsumptionEditor_textbox').textbox('setText', editor.target.val());
+	            $('#coaldustConsumptionEditor').window('open');
+	        }
+
 	        // 公式编辑确定
 	        function formulaEditorSave() {
 	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
@@ -429,6 +514,16 @@
 	            });
 	            editor.target.val($('#denominatorEditor_textbox').textbox('getText'));
 	            $('#denominatorEditor').window('close');
+	        }
+
+	        // 煤耗公式编辑确定
+	        function coaldustConsumptionEditorSave() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'CoalDustConsumption'
+	            });
+	            editor.target.val($('#coaldustConsumptionEditor_textbox').textbox('getText'));
+	            $('#coaldustConsumptionEditor').window('close');
 	        }
 
 	        // tg单击处理
@@ -516,7 +611,7 @@
 	                },
 	                error: function () {
 	                    $.messager.progress('close');
-	                    $.messager.alert('错误', '数据载入失败！');
+	                    $.messager.alert('错误', '数据载入失败！','error');
 	                }
 	            });
 	        }
@@ -558,6 +653,33 @@
 	                }
 	            });
 	        }
+
+	        //////////////////////////////////////////////////////////////////////
+
+	        // 读取设备变量表
+
+	        function queryEquipments(organizationId) {
+	            var queryUrl = 'ProductLineEnergyConsumptionAndAlarmParaSetting.aspx/GetEquipmentsWithTreeGridFormat';
+	            var dataToSend = '{organizationId: "' + organizationId + '"}';
+
+	            $.ajax({
+	                type: "POST",
+	                url: queryUrl,
+	                data: dataToSend,
+	                contentType: "application/json; charset=utf-8",
+	                dataType: "json",
+	                success: function (msg) {
+	                    initializeEquipmentTreeGrid(jQuery.parseJSON(msg.d));
+	                }
+	            });
+	        }
+
+	        function initializeEquipmentTreeGrid(jsonData) {
+	            $('#tgDevice').treegrid({
+	                data: jsonData,
+	                dataType: "json"
+	            });
+	        };
 
 	        //////////////////////////////////////////////////////////////////////
 
@@ -603,6 +725,11 @@
 	            saveCoalConsumptionAlarm(keyId);
                 // 保存能耗公式与报警设置
 	            saveEnergyConsumptionAlarm(keyId);
+
+	            if (saveSuccessed == true)
+	                $.messager.alert('提示', '保存成功', 'info');
+	            else
+	                $.messager.alert('提示', '保存失败', 'error');
 	        }
 
 	        // 提交
@@ -624,7 +751,12 @@
 	                data: dataToSend,
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
+	                async: false,
 	                success: function (msg) {
+	                    return true;
+	                },
+	                error: function (msg) {
+	                    return false;
 	                }
 	            });
 	        }
@@ -640,7 +772,12 @@
 	                data: dataToSend,
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
+	                async: false,
 	                success: function (msg) {
+	                    return true;
+	                },
+	                error: function (msg) {
+	                    return false;
 	                }
 	            });
 	        }
@@ -656,7 +793,12 @@
 	                data: dataToSend,
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
+	                async: false,
 	                success: function (msg) {
+	                    return true;
+	                },
+	                error: function (msg) {
+	                    return false;
 	                }
 	            });
 	        }
@@ -672,7 +814,12 @@
 	                data: dataToSend,
 	                contentType: "application/json; charset=utf-8",
 	                dataType: "json",
+	                async: false,
 	                success: function (msg) {
+	                    return true;
+	                },
+	                error: function (msg) {
+	                    return false;
 	                }
 	            });
 	        }
@@ -687,11 +834,12 @@
 	            loadCoalConsumptionAlarm(keyId);
 	            loadFormulas(keyId);
 	            loadFormulaGroups(organizationId);
-	            loadAmmeters(organizationId);
+	            //loadAmmeters(organizationId);
+	            queryEquipments(organizationId);
 	        });
 
 	    </script>
     </div>
-    </form>
+    <form id="form1" runat="server"></form>
 </body>
 </html>
