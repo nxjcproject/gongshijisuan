@@ -1584,7 +1584,9 @@
     <Content Include="lib\pllib\themes\jquery.jqplot.min.css" />
     <Content Include="UI_FormulaExpression\FormulaGroups.aspx" />
     <Content Include="UI_FormulaExpression\ProductLineEnergyConsumptionAndAlarmParaSetting.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1606,6 +1608,7 @@
   <ItemGroup>
     <Content Include="lib\pllib\syntaxhighlighter\LGPL-LICENSE" />
     <Content Include="lib\pllib\syntaxhighlighter\MIT-LICENSE" />
+    <None Include="Properties\PublishProfiles\FormulaExpression.pubxml" />
     <None Include="Properties\PublishProfiles\Release_LenovoPC.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

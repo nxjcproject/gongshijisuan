@@ -92,7 +92,7 @@
         <% if(CanDelete) { %>
         {
 	        text: '删除公式组',
-	        iconCls: 'icon-clear',
+	        iconCls: 'icon-remove',
 	        handler: deleteFormulaGroup
         }
         <% }%>
