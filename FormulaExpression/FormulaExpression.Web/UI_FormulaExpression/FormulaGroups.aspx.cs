@@ -20,17 +20,50 @@ namespace FormulaExpression.Web.UI_FormulaExpression
 
         public bool CanAdd
         {
-            get { return true; }
+            //get { return true; }
+            get
+            {
+                if (mPageOpPermission.ToArray()[1] == '1')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         public bool CanEdit
         {
-            get { return true; }
+            //get { return true; }
+            get
+            {
+                if (mPageOpPermission.ToArray()[2] == '1')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         public bool CanDelete
         {
-            get { return true; }
+            //get { return true; }
+            get
+            {
+                if (mPageOpPermission.ToArray()[3] == '1')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -41,6 +74,7 @@ namespace FormulaExpression.Web.UI_FormulaExpression
 #if DEBUG
             List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc" };
             AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
+            mPageOpPermission = "0000";
 #elif RELEASE
 #endif
             this.OrganisationTree_ProductionLine.Organizations = GetDataValidIdGroup("ProductionOrganization");                         // 向web用户控件传递数据授权参数

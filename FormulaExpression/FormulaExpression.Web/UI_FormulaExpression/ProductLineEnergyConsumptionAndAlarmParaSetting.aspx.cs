@@ -11,16 +11,28 @@ using System.Web.UI.WebControls;
 
 namespace FormulaExpression.Web.UI_FormulaExpression
 {
-    public partial class ProductLineEnergyConsumptionAndAlarmParaSetting : System.Web.UI.Page
+    public partial class ProductLineEnergyConsumptionAndAlarmParaSetting : WebStyleBaseForEnergy.webStyleBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-
-            }
+            base.InitComponts();
+#if DEBUG
+            ////////////////////调试用,自定义的数据授权
+            List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf" };
+            AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
+            //页面操作权限控制
+            mPageOpPermission = "0100";
+#endif
         }
-
+        /// <summary>
+        /// 增删改查权限控制
+        /// </summary>
+        /// <returns></returns>
+        [WebMethod]
+        public static char[] AuthorityControl()
+        {
+            return mPageOpPermission.ToArray();
+        }
         [WebMethod]
         public static string ValidateExpression(string expression)
         {
