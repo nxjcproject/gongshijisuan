@@ -18,7 +18,7 @@
 </head>
 <body class="easyui-layout">
     <form id="form1" runat="server">
-    <div data-options="region:'west',split:false" style="width:230px">
+    <div data-options="region:'west',split:false" style="width:150px">
         <uc1:OrganisationTree ID="OrganisationTree_ProductionLine" runat="server" />
     </div>
     <!-- 审核需求未明确，以下为原型，可供参考
