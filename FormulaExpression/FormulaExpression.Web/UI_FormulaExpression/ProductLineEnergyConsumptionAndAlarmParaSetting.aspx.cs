@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 
 namespace FormulaExpression.Web.UI_FormulaExpression
 {
-    public partial class ProductLineEnergyConsumptionAndAlarmParaSetting : WebStyleBaseForEnergy.webStyleBase
+    public partial class ProductLineEnergyConsumptionAndAlarmParaSetting : WebStyleBaseForEnergy.webToolsStyleBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
