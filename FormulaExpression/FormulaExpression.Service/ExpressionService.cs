@@ -262,6 +262,7 @@ namespace FormulaExpression.Service
             foreach (DataRow row in data.Rows)
             {
                 row[keyIdCol] = keyId;
+                row[idCol] = Guid.NewGuid().ToString();
             }
             // 插入所有公式
             factory.Save("formula_FormulaDetail", data);

@@ -98,7 +98,7 @@ namespace FormulaExpression.Web.UI_FormulaExpression
                     row["ParentID"] = levelcode.Substring(0, levelcode.Length - 2);
             }
 
-            return TreeGridJsonParser.DataTableToJson(formulas, "LevelCode", "ParentID", "VariableId", "LevelType", "Name", "SaveToHistory", "Formula", "Denominator", "CoalDustConsumption", "Required", "AlarmType", "EnergyAlarmValue", "PowerAlarmValue", "CoalDustConsumptionAlarm", "RelativeParameters", "Remarks");
+            return TreeGridJsonParser.DataTableToJson(formulas, "LevelCode", "ParentID", "VariableId", "LevelType", "Name", "SaveToHistory", "Formula", "Denominator", "CoalDustConsumption", "Required", "AlarmType", "EnergyAlarmValue", "PowerAlarmValue", "CoalDustConsumptionAlarm", "RelativeParameters", "Remarks", "Visible");
         }
 
         /// <summary>
@@ -124,7 +124,8 @@ namespace FormulaExpression.Web.UI_FormulaExpression
         [WebMethod]
         public static void SaveCoalConsumptionAlarm(string keyId, string alarmValue, string relativeParas)
         {
-            ExpressionService.SaveCoalConsumptionAlarm(new Guid(keyId), int.Parse(alarmValue), relativeParas);
+            int m_AlarmValue = Int32.Parse(alarmValue.Substring(0, alarmValue.IndexOf('.')));
+            ExpressionService.SaveCoalConsumptionAlarm(new Guid(keyId), m_AlarmValue, relativeParas);
         }
 
         /// <summary>

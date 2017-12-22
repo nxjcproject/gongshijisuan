@@ -75,6 +75,7 @@
                     <th data-options="field:'CoalDustConsumptionAlarm',width:50,editor:'text'">煤耗报警值</th>
                     <th data-options="field:'RelativeParameters',width:100,editor:'text'">相关参数</th>
                     <th data-options="field:'Remarks',width:100,editor:'text'">备注</th>
+                    <th data-options="field:'Visible',width:60,editor:'text'">是否可见</th>
 			    </tr>
 		    </thead>
 	    </table>
@@ -116,6 +117,25 @@
 		    <input id="coaldustConsumptionEditor_textbox" class="easyui-textbox" style="width:100%" />
 		    <a href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;" data-options="iconCls:'icon-cancel'" onclick="$('#coaldustConsumptionEditor').window('close');">取消</a>
 		    <a id="coaldustConsumptionEditorSave" href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;margin-right:10px;" data-options="iconCls:'icon-ok'" onclick="coaldustConsumptionEditorSave()">保存</a>
+	    </div>
+
+        <div id="VisibleEditor" class="easyui-window" title="是否可见编辑" data-options="closed:true,collapsible:false,minimizable:false,resizable:false,iconCls:'icon-edit'" style="width:200px;height:120px;padding:10px;">
+		    <select id="VisibleEditor_Combobox" class="easyui-combobox" style="width:100%">
+                   <option value="true">是</option>
+                   <option value="false">否</option>
+                </select>
+		    <a href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;" data-options="iconCls:'icon-cancel'" onclick="$('#VisibleEditor').window('close');">取消</a>
+		    <a id="VisibleEditorSave" href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;margin-right:10px;" data-options="iconCls:'icon-ok'" onclick="VisibleEditorSave()">保存</a>
+	    </div>
+        <div id="AlarmTypeEditor" class="easyui-window" title="报警类型编辑" data-options="closed:true,collapsible:false,minimizable:false,resizable:false,iconCls:'icon-edit'" style="width:200px;height:120px;padding:10px;">
+		    <select id="AlarmTypeEditor_Combobox" class="easyui-combobox" style="width:100%">
+                   <option value="1">能耗报警</option>
+                   <option value="2">功率报警</option>
+                   <option value="3">能耗报警,功率报警</option>
+                   <option value="4">不报警</option>
+                </select>
+		    <a href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;" data-options="iconCls:'icon-cancel'" onclick="$('#AlarmTypeEditor').window('close');">取消</a>
+		    <a id="AlarmTypeEditorSave" href="#" class="easyui-linkbutton" style="float:right;margin-top:10px;margin-right:10px;" data-options="iconCls:'icon-ok'" onclick="AlarmTypeEditorSave()">保存</a>
 	    </div>
         <!-- 弹窗编辑结束 -->
 
@@ -437,32 +457,51 @@
 	        // 挂载编辑器单击事件
 	        function amountEditorsClickFunction() {
 	            // 电量公式列
-	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	            var editorFormula = $('#tgformulaEditor').treegrid('getEditor', {
 	                id: editingId,
 	                field: 'Formula'
 	            });
-	            if (editor != null) {
-	                editor.target[0].readOnly = true;
-	                editor.target[0].onfocus = openFormulaEditorWindow;
+	            if (editorFormula != null) {
+	                editorFormula.target[0].readOnly = true;
+	                editorFormula.target[0].onfocus = openFormulaEditorWindow;
 	            }
+
 	            // 电耗公式（分母）列
-	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	            var editorDenominator = $('#tgformulaEditor').treegrid('getEditor', {
 	                id: editingId,
 	                field: 'Denominator'
 	            });
-	            if (editor != null) {
-	                editor.target[0].readOnly = true;
-	                editor.target[0].onfocus = openDenominatorEditorWindow;
+	            if (editorDenominator != null) {
+	                editorDenominator.target[0].readOnly = true;
+	                editorDenominator.target[0].onfocus = openDenominatorEditorWindow;
 	            }
 
 	            // 煤耗公式列
-	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	            var editorCoalDustConsumption = $('#tgformulaEditor').treegrid('getEditor', {
 	                id: editingId,
 	                field: 'CoalDustConsumption'
 	            });
-	            if (editor != null) {
-	                editor.target[0].readOnly = true;
-	                editor.target[0].onfocus = openCoaldustConsumptionEditorWindow;
+	            if (editorCoalDustConsumption != null) {
+	                editorCoalDustConsumption.target[0].readOnly = true;
+	                editorCoalDustConsumption.target[0].onfocus = openCoaldustConsumptionEditorWindow;
+	            }
+	            // 是否可见列
+	            var editorVisible = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'Visible'
+	            });
+	            if (editorVisible != null) {
+	                editorVisible.target[0].readOnly = true;
+	                editorVisible.target[0].onfocus = openVisibleEditorWindow;
+	            }
+	            // 报警类型
+	            var editorAlarmType = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'AlarmType'
+	            });
+	            if (editorAlarmType != null) {
+	                editorAlarmType.target[0].readOnly = true;
+	                editorAlarmType.target[0].onfocus = openAlarmTypeEditorWindow;
 	            }
 	        }
 
@@ -485,7 +524,6 @@
 	            $('#denominatorEditor_textbox').textbox('setText', editor.target.val());
 	            $('#denominatorEditor').window('open');
 	        }
-
 	        // 弹出煤耗公式编辑窗口
 	        function openCoaldustConsumptionEditorWindow() {
 	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
@@ -494,6 +532,24 @@
 	            });
 	            $('#coaldustConsumptionEditor_textbox').textbox('setText', editor.target.val());
 	            $('#coaldustConsumptionEditor').window('open');
+	        }
+	        //弹出是否可见编辑窗口
+	        function openVisibleEditorWindow() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'Visible'
+	            });
+	            $('#VisibleEditor_Combobox').combobox('setValue', editor.target.val().toLowerCase());
+	            $('#VisibleEditor').window('open');
+	        }
+            //弹出报警类型窗口
+	        function openAlarmTypeEditorWindow() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'AlarmType'
+	            });
+	            $('#AlarmTypeEditor_Combobox').combobox('setValue', editor.target.val());
+	            $('#AlarmTypeEditor').window('open');
 	        }
 
 	        // 公式编辑确定
@@ -525,13 +581,40 @@
 	            editor.target.val($('#coaldustConsumptionEditor_textbox').textbox('getText'));
 	            $('#coaldustConsumptionEditor').window('close');
 	        }
+	        //是否可见编辑确定
+	        function VisibleEditorSave() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'Visible'
+	            });
+	            var m_Value = $('#VisibleEditor_Combobox').combobox('getValue');
+	            if (m_Value == "true") {
+	                editor.target.val("True");
+	            }
+	            else {
+	                editor.target.val("False");
+	            }
 
+	            $('#VisibleEditor').window('close');
+	        }
+	        //报警类型编辑确定
+	        function AlarmTypeEditorSave() {
+	            var editor = $('#tgformulaEditor').treegrid('getEditor', {
+	                id: editingId,
+	                field: 'AlarmType'
+	            });
+	            var m_Value = $('#AlarmTypeEditor_Combobox').combobox('getValue');
+	            editor.target.val(m_Value);
+	            $('#AlarmTypeEditor').window('close');
+	        }
 	        // tg单击处理
 	        function clickCell(field, row) {
 	            // 如果不是当前编辑行，取消编辑状态
 	            save();
 	            $('#formulaEditor').window('close');
 	            $('#denominatorEditor').window('close');
+	            $('#VisibleEditor').window('close');
+	            $('#AlarmTypeEditor').window('close');
 	        }
 
 	        // tg双击处理
@@ -545,6 +628,11 @@
 	            if (field == "Denominator")
 	                openDenominatorEditorWindow();
 	            // 如果字段为相关参数，则弹出相关参数编辑窗口
+	            if (field == "Visible")
+	                openVisibleEditorWindow();
+                //如果字段为报警类型，则弹出报警类型编辑窗口
+	            if (field == "AlarmType")
+	                openAlarmTypeEditorWindow();
 	        }
 
 	        ///////////////////////////////////////////////////////////////////////
